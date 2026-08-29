@@ -2,9 +2,14 @@
     box-sizing: border-box;
 }
 
+
+/* =========================
+   BODY
+   ========================= */
+
 body {
     font-family: Arial, sans-serif;
-    background: #f4f6f8;
+    background: #eef1f5;
     margin: 0;
     padding: 35px 15px;
     text-align: center;
@@ -27,8 +32,10 @@ body > form {
     max-width: 380px;
     margin: 0 auto;
     padding: 30px;
+
     border-radius: 18px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.10);
 }
 
 label {
@@ -40,8 +47,10 @@ input {
     padding: 10px;
     font-size: 16px;
     width: 130px;
+
     border: 1px solid #ccc;
     border-radius: 8px;
+
     outline: none;
 }
 
@@ -49,19 +58,31 @@ input:focus {
     border-color: #555;
 }
 
+
+/* =========================
+   GENERAL BUTTON
+   ========================= */
+
 button {
     background: #333;
     color: white;
+
     border: none;
+
     padding: 11px 20px;
+
     border-radius: 9px;
+
     font-size: 16px;
+
     cursor: pointer;
+
     transition: 0.2s;
 }
 
 button:hover {
     background: #555;
+
     transform: translateY(-2px);
 }
 
@@ -72,12 +93,48 @@ button:hover {
 
 .calendar-box {
     background: white;
+
     width: 100%;
-    max-width: 680px;
+    max-width: 720px;
+
     margin: 30px auto 20px;
-    padding: 28px;
-    border-radius: 20px;
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.10);
+
+    padding: 30px;
+
+    border-radius: 22px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================
+   ADD IMPORTANT DATE
+   ========================= */
+
+.add-event-button {
+    display: inline-block;
+
+    margin-bottom: 25px;
+
+    padding: 12px 22px;
+
+    background: #333;
+    color: white;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    transition: 0.2s;
+}
+
+.add-event-button:hover {
+    background: #555;
+
+    transform: translateY(-2px);
 }
 
 
@@ -87,22 +144,29 @@ button:hover {
 
 .navigation {
     display: flex;
+
     align-items: center;
     justify-content: space-between;
+
     gap: 15px;
+
     margin-bottom: 25px;
 }
 
 .navigation form {
     margin: 0;
     padding: 0;
+
     background: none;
+
     width: auto;
 }
 
 .navigation h2 {
     margin: 0;
-    font-size: 28px;
+
+    font-size: 30px;
+
     white-space: nowrap;
 }
 
@@ -113,13 +177,18 @@ button:hover {
 
 .weekdays {
     display: grid;
+
     grid-template-columns: repeat(7, 1fr);
-    margin-bottom: 5px;
+
+    margin-bottom: 6px;
 }
 
 .weekdays div {
     padding: 12px 5px;
+
     font-weight: bold;
+
+    font-size: 15px;
 }
 
 
@@ -160,17 +229,27 @@ button:hover {
 
 .calendar-grid {
     display: grid;
+
     grid-template-columns: repeat(7, 1fr);
+
     border-top: 1px solid #ddd;
     border-left: 1px solid #ddd;
+
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .day {
-    min-height: 70px;
+    min-height: 85px;
 
     display: flex;
+
+    flex-direction: column;
+
     align-items: center;
     justify-content: center;
+
+    gap: 4px;
 
     border-right: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
@@ -184,15 +263,109 @@ button:hover {
 }
 
 .day:hover {
-    background: #f1f5f9;
+    background: #f8fafc;
+
+    box-shadow: inset 0 0 0 2px #e5e7eb;
 }
 
 
-/* Sunday */
+/* =========================
+   SUNDAY
+   ========================= */
 
 .calendar-grid .day:nth-child(7n) {
     color: #dc2626;
+
     background: #fff5f5;
+}
+
+.calendar-grid .day:nth-child(7n):hover {
+    background: #ffecec;
+}
+
+
+/* =========================
+   DATE NUMBER
+   ========================= */
+
+.date-number {
+    font-weight: bold;
+
+    font-size: 18px;
+}
+
+
+/* =========================
+   EVENT
+   ========================= */
+
+.event {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    background: #fff3cd;
+
+    color: #856404;
+
+    padding: 4px 6px;
+
+    border-radius: 6px;
+
+    font-size: 11px;
+    font-weight: bold;
+
+    max-width: 90%;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+.event-name {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================
+   DELETE ×
+   ========================= */
+
+.delete-button {
+    background: none;
+
+    border: none;
+
+    color: #dc2626;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    padding: 0;
+
+    margin: 0;
+
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background: none;
+
+    color: #991b1b;
+
+    transform: none;
 }
 
 
@@ -202,13 +375,17 @@ button:hover {
 
 .back-button {
     display: inline-block;
+
     margin-top: 20px;
+
     padding: 11px 22px;
 
     background: #333;
+
     color: white;
 
     border-radius: 9px;
+
     text-decoration: none;
 
     font-size: 16px;
@@ -218,6 +395,7 @@ button:hover {
 
 .back-button:hover {
     background: #555;
+
     transform: translateY(-2px);
 }
 
@@ -246,37 +424,40 @@ button:hover {
 
     .navigation button {
         padding: 8px 10px;
+
         font-size: 13px;
     }
 
     .day {
-        min-height: 55px;
+        min-height: 60px;
+
+        font-size: 14px;
+    }
+
+    .date-number {
         font-size: 15px;
     }
 
     .weekdays div {
-        font-size: 13px;
+        font-size: 12px;
+
         padding: 8px 2px;
     }
 
-    /* add event button*/
     .add-event-button {
-    display: inline-block;
-    margin-bottom: 20px;
-    padding: 11px 20px;
+        font-size: 14px;
 
-    background-color: #333;
-    color: white;
+        padding: 9px 15px;
+    }
 
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 16px;
+    .event {
+        font-size: 9px;
 
-    transition: 0.2s;
-}
+        padding: 3px 4px;
+    }
 
-.add-event-button:hover {
-    background-color: #555;
-    transform: translateY(-2px);
-}
+    .delete-button {
+        font-size: 13px;
+    }
+ 
 }

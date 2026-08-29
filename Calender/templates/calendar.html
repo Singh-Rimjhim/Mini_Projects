@@ -12,32 +12,45 @@
 </head>
 
 <body>
-
+    
     <div class="calendar-box">
-        <a href="/add-event?year={{ year }}&month={{ month }}" class="add-event-button">Add Important Date</a>
+        <a href="/add-event?year={{ year }}&month={{ month }}"
+           class="add-event-button">
+            + Add Important Date
+        </a>
+
+
         <div class="navigation">
 
-    <form method="POST" action="/calendar">
-        <input type="hidden" name="year" value="{{ year }}">
-        <input type="hidden" name="month" value="{{ month }}">
-        <input type="hidden" name="action" value="previous">
+            <form method="POST" action="/calendar">
+                <input type="hidden" name="year" value="{{ year }}">
+                <input type="hidden" name="month" value="{{ month }}">
+                <input type="hidden" name="action" value="previous">
 
-        <button type="submit"> Previous </button>
-    </form>
+                <button type="submit">
+                     Previous
+                </button>
+            </form>
 
-    <h2>{{ month_name }}</h2>
 
-    <form method="POST" action="/calendar">
-        <input type="hidden" name="year" value="{{ year }}">
-        <input type="hidden" name="month" value="{{ month }}">
-        <input type="hidden" name="action" value="next">
+            <h2>{{ month_name }}</h2>
 
-        <button type="submit"> Next </button>
-    </form>
 
-</div>
+            <form method="POST" action="/calendar">
+                <input type="hidden" name="year" value="{{ year }}">
+                <input type="hidden" name="month" value="{{ month }}">
+                <input type="hidden" name="action" value="next">
+
+                <button type="submit">
+                    Next 
+                </button>
+            </form>
+
+        </div>
+
 
         <div class="weekdays">
+
             <div>Mon</div>
             <div>Tue</div>
             <div>Wed</div>
@@ -45,7 +58,9 @@
             <div>Fri</div>
             <div>Sat</div>
             <div>Sun</div>
+
         </div>
+
 
         <div class="calendar-grid">
 
@@ -54,7 +69,47 @@
                 <div class="day">
 
                     {% if day != 0 %}
-                        {{ day }}
+
+                        <div class="date-number">
+                            {{ day }}
+                        </div>
+
+
+                        {% for event in events %}
+
+                            {% set event_date = event[1].split("-") %}
+
+
+                            {% if event_date[0]|int == year
+                                  and event_date[1]|int == month
+                                  and event_date[2]|int == day %}
+
+
+                                <div class="event">
+
+                                    <div class="event-name">
+                                        {{ event[2] }}
+                                    </div>
+
+
+                                    <form method="POST"
+                                          action="/delete-event/{{ event[0] }}">
+
+                                        <button type="submit"
+                                                class="delete-button">
+                                            X
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+
+                            {% endif %}
+
+                        {% endfor %}
+
+
                     {% endif %}
 
                 </div>
@@ -64,7 +119,16 @@
         </div>
 
     </div>
-    <a href="/" class="back-button">Back to Home</a>
+
+
+    <a href="/"
+       class="back-button">
+
+        Back to Home
+
+    </a>
+
+
 </body>
 
 </html>

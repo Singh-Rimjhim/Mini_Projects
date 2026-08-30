@@ -1,12 +1,21 @@
 from flask import Flask, render_template, request, redirect
 import calendar
 import sqlite3
+import os
 
 app = Flask(__name__)
 
+# Database location
+# /tmp works on Vercel for temporary runtime storage otherwise by event.db file
+
+if os.environ.get("VERCEL"):
+    DB_PATH = "/tmp/events.db"
+else:
+    DB_PATH = "events.db"
+
 
 def create_database():
-    connection = sqlite3.connect("events.db")
+    connection = sqlite3.connect(DB_PATH)
 
     cursor = connection.cursor()
 
@@ -20,6 +29,10 @@ def create_database():
 
     connection.commit()
     connection.close()
+
+
+# Create database when the application starts
+create_database()
 
 
 @app.route("/")
@@ -38,7 +51,7 @@ def add_events():
         date = request.form["date"]
         event = request.form["event"]
 
-        connection = sqlite3.connect("events.db")
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         cursor.execute(
@@ -51,16 +64,21 @@ def add_events():
 
         print("Event saved successfully!")
 
+        return redirect(
+            f"/calendar?year={date.split('-')[0]}&month={int(date.split('-')[1])}"
+        )
+
     return render_template(
         "events.html",
         year=year,
         month=month
     )
 
+
 @app.route("/delete-event/<int:event_id>", methods=["POST"])
 def delete_event(event_id):
 
-    connection = sqlite3.connect("events.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute(
@@ -79,6 +97,7 @@ def delete_event(event_id):
     connection.close()
 
     if result:
+
         date = result[0]
         date_parts = date.split("-")
 
@@ -91,19 +110,24 @@ def delete_event(event_id):
 
     return redirect("/")
 
+
 @app.route("/calendar", methods=["GET", "POST"])
 def calendar_page():
+
     if request.method == "GET":
+
         year = int(request.args.get("year"))
         month = int(request.args.get("month"))
 
     else:
+
         year = int(request.form["year"])
         month = int(request.form["month"])
 
         action = request.form.get("action")
 
         if action == "previous":
+
             month = month - 1
 
             if month == 0:
@@ -111,27 +135,41 @@ def calendar_page():
                 year = year - 1
 
         elif action == "next":
+
             month = month + 1
 
             if month == 13:
                 month = 1
                 year = year + 1
 
+
+    # Check year
     if year < 1:
         return "Invalid year! Year cannot be less than 1."
+
+
+    # Check month
     if month < 1 or month > 12:
         return "Invalid month! Please enter a month between 1 and 12."
 
+
     month_name = f"{calendar.month_name[month]} {year}"
 
+
+    # Generate calendar
     weeks = calendar.monthcalendar(year, month)
 
     days = []
 
     for week in weeks:
+
         for day in week:
+
             days.append(day)
-    connection = sqlite3.connect("events.db")
+
+
+    # Get events
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute(
@@ -141,6 +179,8 @@ def calendar_page():
     events = cursor.fetchall()
 
     connection.close()
+
+
     return render_template(
         "calendar.html",
         days=days,
@@ -152,5 +192,4 @@ def calendar_page():
 
 
 if __name__ == "__main__":
-    create_database()
     app.run(debug=True)
